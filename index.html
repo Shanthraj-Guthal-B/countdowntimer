@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Colorful Countdown Timer</title>
+    <style>
+      body {
+        background-color: #C2DED1;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        color: #354259;
+      }
+      #timer {
+        font-size: 48px;
+        color: #ff5733;
+      }
+      #buttons {
+        margin-top: 20px;
+      }
+      button {
+        background-color: #ECE5C7;
+
+        color: #354259;
+        border: #354259;
+        border-style: ridge;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>COUNTDOWN TIMER</h1>
+    <p id="timer">00:00</p>
+    <div id="buttons">
+      <button id="startButton" onclick="startTimer()">Start</button>
+      <button id="stopButton" onclick="stopTimer()" disabled>Stop</button>
+      <button id="resetButton" onclick="resetTimer()">Reset</button>
+      <input
+        type="number"
+        id="countdownInput"
+        min="1"
+        placeholder="Set Time (in seconds)"
+      />
+      <button id="changeButton" onclick="changeTime()">Set Time</button>
+    </div>
+
+    <script>
+      let time = 60; // Initial time in seconds (1 minutes)
+      let timerInterval;
+      let running = false;
+
+      function updateTimerDisplay() {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        document.getElementById("timer").innerText = `${String(
+          minutes
+        ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      }
+
+      function startTimer() {
+        if (!running) {
+          running = true;
+          timerInterval = setInterval(updateCountdown, 1000);
+          document.getElementById("startButton").disabled = true;
+          document.getElementById("stopButton").disabled = false;
+          document.getElementById("changeButton").disabled = true;
+        }
+      }
+
+      function stopTimer() {
+        if (running) {
+          running = false;
+          clearInterval(timerInterval);
+          document.getElementById("startButton").disabled = false;
+          document.getElementById("stopButton").disabled = true;
+          document.getElementById("changeButton").disabled = false;
+        }
+      }
+
+      function resetTimer() {
+        stopTimer();
+        time = 60; // Reset time to 1 minutes
+        updateTimerDisplay();
+        document.getElementById("startButton").disabled = false;
+      }
+
+      function changeTime() {
+        const newTime = parseInt(
+          document.getElementById("countdownInput").value,
+          10
+        );
+        if (newTime > 0) {
+          time = newTime;
+          updateTimerDisplay();
+        }
+      }
+
+      function updateCountdown() {
+        if (time > 0) {
+          time--;
+          updateTimerDisplay();
+        } else {
+          stopTimer();
+          // You can add additional actions here when the timer reaches zero.
+        }
+      }
+    </script>
+  </body>
+</html>
